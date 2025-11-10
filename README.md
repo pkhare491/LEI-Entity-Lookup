@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LEI Entity Lookup Tool - Shareable Version</title>
+    <title>LEI Entity Lookup Tool - Shareable Version v2.1</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         * {
@@ -563,7 +563,7 @@
             <div class="footer-info">
                 <p><strong>About this Tool:</strong> Professional LEI Entity Lookup using GLEIF API</p>
                 <p>Data source: <a href="https://www.gleif.org/" target="_blank">Global Legal Entity Identifier Foundation (GLEIF)</a></p>
-                <p>Tool Version: 2.0 | Last Updated: November 2025</p>
+                <p>Tool Version: 2.1 | Last Updated: November 2025 | Build: 20251110</p>
             </div>
         </div>
     </div>
@@ -811,16 +811,62 @@
             }
         });
 
-        // Simple password protection
+        // Enhanced password protection with session storage
         function checkPassword() {
-            const password = prompt('Please enter the password to access this tool:');
+            // Check if already authenticated in this session
+            if (sessionStorage.getItem('leiToolAuthenticated') === 'true') {
+                return true;
+            }
+
+            const password = prompt('Please enter the password to access the LEI Lookup Tool:');
             const correctPassword = 'Sham@1357'; // Change this to your desired password
             
             if (password !== correctPassword) {
-                alert('Incorrect password. Access denied.');
-                document.body.innerHTML = '<div style="text-align: center; margin-top: 50px; font-family: Arial;"><h2>Access Denied</h2><p>You do not have permission to view this page.</p></div>';
+                alert('❌ Incorrect password. Access denied.');
+                document.body.innerHTML = `
+                    <div style="
+                        text-align: center; 
+                        margin-top: 100px; 
+                        font-family: 'Segoe UI', Arial, sans-serif;
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        min-height: 100vh;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: white;
+                        margin: 0;
+                        padding: 20px;
+                        box-sizing: border-box;
+                    ">
+                        <div style="
+                            background: white;
+                            color: #333;
+                            padding: 40px;
+                            border-radius: 15px;
+                            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                            max-width: 500px;
+                        ">
+                            <h2 style="margin-bottom: 20px; color: #dc3545;">🔒 Access Denied</h2>
+                            <p style="margin-bottom: 20px;">You do not have permission to view this page.</p>
+                            <p style="font-size: 0.9em; color: #666;">Please contact the administrator for access credentials.</p>
+                            <button onclick="location.reload()" style="
+                                margin-top: 20px;
+                                padding: 10px 20px;
+                                background: #667eea;
+                                color: white;
+                                border: none;
+                                border-radius: 5px;
+                                cursor: pointer;
+                                font-size: 16px;
+                            ">Try Again</button>
+                        </div>
+                    </div>
+                `;
                 return false;
             }
+            
+            // Store authentication in session storage
+            sessionStorage.setItem('leiToolAuthenticated', 'true');
             return true;
         }
 
