@@ -811,9 +811,24 @@
             }
         });
 
+        // Simple password protection
+        function checkPassword() {
+            const password = prompt('Please enter the password to access this tool:');
+            const correctPassword = 'Sham@1357'; // Change this to your desired password
+            
+            if (password !== correctPassword) {
+                alert('Incorrect password. Access denied.');
+                document.body.innerHTML = '<div style="text-align: center; margin-top: 50px; font-family: Arial;"><h2>Access Denied</h2><p>You do not have permission to view this page.</p></div>';
+                return false;
+            }
+            return true;
+        }
+
         // Initialize with focus on textarea
         window.addEventListener('load', function() {
-            document.getElementById('leiInput').focus();
+            if (checkPassword()) {
+                document.getElementById('leiInput').focus();
+            }
         });
     </script>
 </body>
